@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Build the NostrRide iOS shell. Run on a Mac with Xcode, CocoaPods and Node 22.23.4+.
-#   ./setup.sh                 # main branch of trevthom/nostr-ride
-#   NR_REF=v1.2.3 ./setup.sh   # a tag or commit
-#   NR_REPO=<url> ./setup.sh   # a fork
+#   bash setup.sh                 # main branch of trevthom/nostr-ride
+#   NR_REF=v1.2.3 bash setup.sh   # a tag or commit
+#   NR_REPO=<url> bash setup.sh   # a fork
 set -euo pipefail
 
 HERE="$(cd "$(dirname "$0")" && pwd)"
@@ -29,7 +29,9 @@ mkdir -p "$APP/native"
 cp -R "$HERE/native/." "$APP/native/"
 
 echo "==> Capacitor and CocoaPods"
-( cd "$APP/native" && npm install && npx cap copy ios && cd ios/App && pod install )
+# sync, not copy: the update step regenerates the plugin podspecs a fresh clone does not have,
+# and it runs pod install at the end.
+( cd "$APP/native" && npm install && npx cap sync ios )
 
 WS="$APP/native/ios/App/App.xcworkspace"
 echo
