@@ -1,0 +1,4 @@
+# The app checkout setup.sh makes. The shell itself lives in trevthom/nostr-ride.
+app/
+.DS_Store
+*.log
